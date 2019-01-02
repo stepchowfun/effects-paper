@@ -128,7 +128,7 @@ PRELUDE_ARITIES = {
   'rightarrow' => [0],
   'rightsquigarrow' => [0],
   'rrbracket' => [0],
-  'section' => [0, 1],
+  'section' => [1],
   'setcopyright' => [1],
   'small' => [0],
   'star' => [0],
@@ -160,7 +160,9 @@ end
 def count_args(s)
   arity = 0
   loop do
-    if prefix_matches?(s, SQUARE_REGEX)
+    if s.start_with?('*')
+      s.slice!(0)
+    elsif prefix_matches?(s, SQUARE_REGEX)
       s.slice!(SQUARE_REGEX)
     elsif prefix_matches?(s, CURLY_REGEX)
       s.slice!(CURLY_REGEX)
