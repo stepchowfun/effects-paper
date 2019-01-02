@@ -42,7 +42,7 @@ if ENV['TRAVIS_PULL_REQUEST'] != 'false'
     c.auto_paginate = true
   end
 
-  body = "[Here](https://s3.amazonaws.com/stephan-misc/paper/branch-" \
+  body = "[Here](https://s3.amazonaws.com/effects-paper/branch-" \
     "#{ENV['TRAVIS_PULL_REQUEST_BRANCH']}.pdf) is a link to the PDF " \
     "generated from this PR. This is an automated message."
 
