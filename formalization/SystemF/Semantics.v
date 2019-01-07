@@ -9,7 +9,6 @@
 Require Import Main.SystemF.LocalClosure.
 Require Import Main.SystemF.Opening.
 Require Import Main.SystemF.Syntax.
-Require Import Main.Tactics.
 
 Inductive value : term -> Prop :=
 | vAbs :
@@ -51,40 +50,3 @@ Inductive step : term -> term -> Prop :=
   step (eTApp (eTAbs e1) t) (etOpen e1 0 t).
 
 Hint Constructors step.
-
-Theorem stepRegularity :
-  forall e1 e2,
-  step e1 e2 ->
-  eLocallyClosed e1 0 0 /\ eLocallyClosed e2 0 0.
-Proof.
-  clean. induction H; split; magic; clean.
-  - invert H0; magic.
-  - apply locallyClosedOpenAbs with (t := t); magic. invert H0; magic.
-  - invert H; magic.
-  - invert H; magic.
-Qed.
-
-Hint Resolve stepRegularity.
-
-Inductive stepStar : term -> term -> Prop :=
-| scRefl :
-  forall e,
-  eLocallyClosed e 0 0 ->
-  stepStar e e
-| scStep :
-  forall e1 e2 e3,
-  step e1 e2 ->
-  stepStar e2 e3 ->
-  stepStar e1 e3.
-
-Hint Constructors stepStar.
-
-Theorem stepStarRegularity :
-  forall e1 e2,
-  stepStar e1 e2 ->
-  eLocallyClosed e1 0 0 /\ eLocallyClosed e2 0 0.
-Proof.
-  clean. induction H; magic. fact (stepRegularity e1 e2). magic.
-Qed.
-
-Hint Resolve stepStarRegularity.

@@ -44,17 +44,3 @@ Module Name : NameSig.
 End Name.
 
 Export Name.
-
-(************************************)
-(* Miscellaneous facts about names. *)
-(************************************)
-
-Theorem nameInRemove :
-  forall l x1 x2,
-  In x1 (remove nameEq x2 l) ->
-  In x1 l /\ x1 <> x2.
-Proof.
-  clean. induction l; magic.
-Qed.
-
-Hint Resolve nameInRemove.
