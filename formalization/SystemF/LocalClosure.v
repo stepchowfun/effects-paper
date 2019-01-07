@@ -7,7 +7,6 @@
 (**************************************)
 
 Require Import Main.SystemF.Syntax.
-Require Import Main.Tactics.
 
 Inductive tLocallyClosed : type -> nat -> Prop :=
 | tlcFreeVar :
@@ -58,32 +57,3 @@ Inductive eLocallyClosed : term -> nat -> nat -> Prop :=
   eLocallyClosed (eTApp e t) ne nt.
 
 Hint Constructors eLocallyClosed.
-
-(*************************************************)
-(* Local closure is monotonic with the level(s). *)
-(*************************************************)
-
-Theorem tLocalClosureMonotonic :
-  forall i1 i2 t,
-  i1 <= i2 ->
-  tLocallyClosed t i1 ->
-  tLocallyClosed t i2.
-Proof.
-  clean. gen i2 H. induction H0; magic.
-Qed.
-
-(* Don't add a resolve hint because eapply has a hard time guessing i1. *)
-
-Theorem eLocalClosureMonotonic :
-  forall e ie1 ie2 it1 it2,
-  ie1 <= ie2 ->
-  it1 <= it2 ->
-  eLocallyClosed e ie1 it1 ->
-  eLocallyClosed e ie2 it2.
-Proof.
-  clean. gen ie2 it2 H H0.
-  induction H1; magic; constructor; magic; clean;
-    apply tLocalClosureMonotonic with (i1 := nt); magic.
-Qed.
-
-(* Don't add a resolve hint because eapply has a hard time guessing ie1/it1. *)
